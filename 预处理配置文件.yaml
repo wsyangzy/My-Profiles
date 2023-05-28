@@ -16,7 +16,7 @@ parsers: # array
       }
     yaml:
       # 添加预处理策略组
-      append-proxy-groups:
+      prepend-proxy-groups: # 数组合并至原配置proxy-groups数组后
         - name: 🚀 节点选择
           type: select
           proxies:
@@ -32,8 +32,8 @@ parsers: # array
         - name: ♻️ PROXY
           type: url-test
           url: http://www.gstatic.com/generate_204
-          interval: 600 # 自动切换代理的间隔时间
-          tolerance: 1000 # 检测代理的超时时间
+          interval: 1800 # 30分钟
+          tolerance: 300 # 小于300ms 不切换
           proxies:
             - ♻️ 香港节点
             - ♻️ 新加坡节点
@@ -45,37 +45,37 @@ parsers: # array
         - name: ♻️ 香港节点
           type: url-test
           url: http://www.gstatic.com/generate_204
-          interval: 1000
+          interval: 1800
 
         - name: ♻️ 新加坡节点
           type: url-test
           url: http://www.gstatic.com/generate_204
-          interval: 600
+          interval: 1800
 
         - name: ♻️ 台湾节点
           type: url-test
           url: http://www.google.com/generate_204
-          interval: 300
+          interval: 1800
 
         - name: ♻️ 日本节点
           type: url-test
           url: http://www.google.com/generate_204
-          interval: 300
+          interval: 1800
 
         - name: ♻️ 韩国节点
           type: url-test
           url: http://www.google.com/generate_204
-          interval: 300
+          interval: 1800
 
         - name: ♻️ 美国节点
           type: url-test
           url: http://www.google.com/generate_204
-          interval: 300
+          interval: 1800
 
         - name: ♻️ 其他节点
           type: url-test
           url: http://www.google.com/generate_204
-          interval: 300
+          interval: 1800
 
         - name: ♻️ Netflix
           type: select
@@ -83,26 +83,26 @@ parsers: # array
         - name: ⚖️ 负载均衡-散列
           type: load-balance
           url: "http://www.google.com/generate_204"
-          interval: 100
+          interval: 600 # 10分钟
           strategy: consistent-hashing
 
         - name: ⚖️ 负载均衡-轮询
           type: load-balance
           url: "http://www.google.com/generate_204"
-          interval: 100
+          interval: 600
           strategy: round-robin
 
       # 策略组示例
       # - name: 分组名
-      # type: select       # 手动选点
-      # url-test     # 自动选择延迟最低的节点
-      # fallback     # 节点故障时自动切换下一个
-      # laod-balance # 均衡使用分组内的节点
-      # url: http://www.gstatic.com/generate_204 # 测试地址 非select类型分组必要
-      # interval: 300 # 自动测试间隔时间，单位秒 非select类型分组必要
-      # tolerance: 50 # 允许的偏差，节点之间延迟差小于该值不切换 非必要
-      # proxies:
-      # - 节点名称或其他分组套娃
+      #   type: select       # 手动选点
+      #   url-test     # 自动选择延迟最低的节点
+      #   fallback     # 节点故障时自动切换下一个
+      #   laod-balance # 均衡使用分组内的节点
+      #   url: http://www.gstatic.com/generate_204 # 测试地址 非select类型分组必要
+      #   interval: 300 # 自动测试间隔时间，单位秒 非select类型分组必要
+      #   tolerance: 50 # 允许的偏差，节点之间延迟差小于该值不切换 非必要
+      #   proxies:
+      #     - 节点名称或其他分组套娃
 
       commands:
        # 三个内置值用于设置策略组节点
@@ -149,7 +149,7 @@ parsers: # array
         # 正则教程：https://deerchao.cn/tutorials/regex/regex.htm#top
 
       # 添加预处理规则
-      prepend-rules: # 规则由上往下遍历，如上面规则已经命中，则不再往下处理
+      prepend-rules: # 数组合并至原配置rules数组前，规则由上往下遍历，如上面规则已经命中，则不再往下处理
         - DOMAIN-SUFFIX,spotify.com,♻️ 香港节点
         - DOMAIN-SUFFIX,google.com,♻️ 香港节点
         - DOMAIN-SUFFIX,youtube.com,♻️ 香港节点
@@ -179,17 +179,17 @@ parsers: # array
         - RULE-SET,telegramcidr,♻️ PROXY
         - GEOIP,LAN,DIRECT
         - GEOIP,CN,DIRECT
-        # - MATCH,♻️ PROXY #白名单模式 「没有命中规则的网络流量，统统使用代理」
-        - MATCH,DIRECT #黑名单模式 「只有命中规则的网络流量，才使用代理」
+        - MATCH,♻️ PROXY #白名单模式 「没有命中规则的网络流量，统统使用代理」
+        # - MATCH,DIRECT #黑名单模式 「只有命中规则的网络流量，才使用代理」
 
       # 添加规则集
-      mix-rule-providers:
+      mix-rule-providers: # 对象合并至原配置rule-providers中
         reject:
           type: http
           behavior: domain
           url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt"
           path: ./ruleset/reject.yaml
-          interval: 86400
+          interval: 86400 # 一天
 
         icloud:
           type: http
