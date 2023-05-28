@@ -13,7 +13,6 @@ parsers: # array
         const groups = []
         const rules = []
         return yaml.stringify({ ...rawObj, 'proxy-groups': groups, rules })
-        return yaml.stringify({ ...rawObj, 'proxy-groups': groups, rules })
       }
     yaml:
       # 添加预处理策略组
