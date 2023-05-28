@@ -1,5 +1,6 @@
 # 参数说明：https://docs.cfw.lbyczf.com/contents/parser.html
 # https://github.com/Fndroid/clash_for_windows_pkg/issues/2729
+# https://github.com/Fndroid/clash_for_windows_pkg/issues/2193
 # https://github.com/Loyalsoldier/clash-rules
 # https://bulianglin.com/archives/lb.html
 parsers: # array
@@ -17,9 +18,21 @@ parsers: # array
     yaml:
       # 添加预处理策略组
       prepend-proxy-groups: # 数组合并至原配置proxy-groups数组后
+      # 策略组示例
+      # - name: 分组名
+      #   type: select       # 手动选点
+      #   url-test     # 自动选择延迟最低的节点
+      #   fallback     # 节点故障时自动切换下一个
+      #   laod-balance # 均衡使用分组内的节点
+      #   url: http://www.gstatic.com/generate_204 # 测试地址 非select类型分组必要
+      #   interval: 1800 # 自动测试间隔时间，单位秒 非select类型分组必要
+      #   tolerance: 500 # 允许的偏差，节点之间延迟差小于该值不切换 非必要
+      #   proxies:
+      #     - 节点名称或其他分组套娃
         - name: 🚀 节点选择
           type: select
           proxies:
+            - ♻️ 负载均衡
             - ♻️ PROXY
             - ♻️ 香港节点
             - ♻️ 新加坡节点
@@ -33,7 +46,7 @@ parsers: # array
           type: url-test
           url: http://www.gstatic.com/generate_204
           interval: 1800 # 30分钟
-          tolerance: 300 # 小于300ms 不切换
+          tolerance: 500 # 小于300ms 不切换
           proxies:
             - ♻️ 香港节点
             - ♻️ 新加坡节点
@@ -80,6 +93,16 @@ parsers: # array
         - name: ♻️ Netflix
           type: select
 
+        # 自动选择[散列/轮询]进行负载均衡
+        - name: ♻️ 负载均衡
+          type: url-test
+          url: http://www.gstatic.com/generate_204
+          interval: 1800
+          tolerance: 500
+          proxies:
+            - ⚖️ 负载均衡-散列
+            - ⚖️ 负载均衡-轮询
+
         - name: ⚖️ 负载均衡-散列
           type: load-balance
           url: "http://www.google.com/generate_204"
@@ -91,56 +114,43 @@ parsers: # array
           url: "http://www.google.com/generate_204"
           interval: 600
           strategy: round-robin
-
-      # 策略组示例
-      # - name: 分组名
-      #   type: select       # 手动选点
-      #   url-test     # 自动选择延迟最低的节点
-      #   fallback     # 节点故障时自动切换下一个
-      #   laod-balance # 均衡使用分组内的节点
-      #   url: http://www.gstatic.com/generate_204 # 测试地址 非select类型分组必要
-      #   interval: 300 # 自动测试间隔时间，单位秒 非select类型分组必要
-      #   tolerance: 50 # 允许的偏差，节点之间延迟差小于该值不切换 非必要
-      #   proxies:
-      #     - 节点名称或其他分组套娃
-
+          
       commands:
-       # 三个内置值用于设置策略组节点
-       # []proxyNames 所有节点
-       # []groupNames 所有策略组
-       # []shuffledProxyNames 重新排列后的节点 ？
+        # 三个内置值用于设置策略组节点
+        # []proxyNames 所有节点
+        # []groupNames 所有策略组
+        # []shuffledProxyNames 重新排列后的节点
+        # 详见官方文档：https://docs.cfw.lbyczf.com/contents/parser.html#commands-%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-beta
 
-        # 负载均衡
-        - proxy-groups.⚖️ 负载均衡-散列.proxies=[]groupNames|香港|新加坡|台|日本|韩国
-        # - proxy-groups.1.proxies.0+⚖️ 负载均衡-散列
-        - proxy-groups.⚖️ 负载均衡-轮询.proxies=[]groupNames|香港|新加坡|台|日本|韩国
-        # - proxy-groups.1.proxies.0+⚖️ 负载均衡-轮询
-
-        - proxy-groups.♻️ 香港节点.proxies=[]proxyNames|香港
-        - proxy-groups.♻️ 新加坡节点.proxies=[]proxyNames|新加坡
-        - proxy-groups.♻️ 台湾节点.proxies=[]proxyNames|台
-        - proxy-groups.♻️ 日本节点.proxies=[]proxyNames|日本
-        - proxy-groups.♻️ 韩国节点.proxies=[]proxyNames|韩国
-        - proxy-groups.♻️ 美国节点.proxies=[]proxyNames|美国
-        - proxy-groups.♻️ 其他节点.proxies=[]proxyNames|^[^香日台新韩美]*$ # 排除节点名字有“香日台新韩美”的节点
-        - proxy-groups.♻️ Netflix.proxies=[]proxyNames|奈飞|nf|解锁|Netflix|netflix
-
-        # 策略组中添加负载均衡节点 - proxy-groups.[数组序号/策略组名称].proxies.0+[节点名称]
+        # 负载均衡策略组
+        - proxy-groups.⚖️ 负载均衡-散列.proxies=[]groupNames|香港|新加坡|台湾|日本
         - proxy-groups.♻️ PROXY.proxies.0+⚖️ 负载均衡-散列
+        - proxy-groups.⚖️ 负载均衡-轮询.proxies=[]groupNames|香港|新加坡|台湾|日本
         - proxy-groups.♻️ PROXY.proxies.0+⚖️ 负载均衡-轮询
 
-        # 为各个策略组添加一个DIRECT，避免机场节点无法匹配上面的正则筛选而导致配置出错
-        - proxy-groups.♻️ Netflix.proxies.0+DIRECT
-        # - proxy-groups.♻️ 香港节点.proxies.0+DIRECT
-        # - proxy-groups.♻️ 新加坡节点.proxies.0+DIRECT
-        # - proxy-groups.♻️ 台湾节点.proxies.0+DIRECT
-        # - proxy-groups.♻️ 日本节点.proxies.0+DIRECT
-        # - proxy-groups.♻️ 韩国节点.proxies.0+DIRECT
-        # - proxy-groups.♻️ 美国节点.proxies.0+DIRECT
-        # - proxy-groups.♻️ 其他节点.proxies.0+DIRECT
+        # 筛选对应节点，不包括高倍节点，高倍率节点归类在其他节点
+        - proxy-groups.♻️ 香港节点.proxies=[]proxyNames|^(?!.*[倍xX])(?=.*(?:[hH][kK]|香港)).*$
+        - proxy-groups.♻️ 新加坡节点.proxies=[]proxyNames|^(?!.*[倍xX])(?=.*(?:[sS][pP]|新加坡)).*$
+        - proxy-groups.♻️ 台湾节点.proxies=[]proxyNames|^(?!.*[倍xX])(?=.*(?:[tT][wW]|台湾)).*$
+        - proxy-groups.♻️ 日本节点.proxies=[]proxyNames|^(?!.*[倍xX])(?=.*(?:[jJ][pP]|日本)).*$
+        - proxy-groups.♻️ 韩国节点.proxies=[]proxyNames|^(?!.*[倍xX])(?=.*(?:[kK][rR]|韩国)).*$
+        - proxy-groups.♻️ 美国节点.proxies=[]proxyNames|^(?!.*[倍xX])(?=.*(?:[uU][sS]|美国)).*$
+        # - proxy-groups.♻️ 其他节点.proxies=[]proxyNames|^[^香日台新韩美]*$
+        - proxy-groups.♻️ 其他节点.proxies=[]proxyNames|^(?:(?!.*[香日台新韩美])|.*(?:[xX]|倍)).*$
+        - proxy-groups.♻️ Netflix.proxies=[]proxyNames|奈飞|解锁|nf|netflix/i
 
-        # - proxy-groups.节点名字.proxies.0+DIRECT # 向指定分组第一个位置添加一个 DIRECT 节点名
-        # 一些可能用到的正则过滤节点示例，使分组更细致
+        # 为各个策略组添加 DIRECT，避免机场节点无法匹配上面的正则筛选而导致配置出错
+        - proxy-groups.♻️ Netflix.proxies.0+DIRECT
+
+        - proxy-groups.♻️ 香港节点.proxies.0+DIRECT
+        - proxy-groups.♻️ 新加坡节点.proxies.0+DIRECT
+        - proxy-groups.♻️ 台湾节点.proxies.0+DIRECT
+        - proxy-groups.♻️ 日本节点.proxies.0+DIRECT
+        - proxy-groups.♻️ 韩国节点.proxies.0+DIRECT
+        - proxy-groups.♻️ 美国节点.proxies.0+DIRECT
+        - proxy-groups.♻️ 其他节点.proxies.0+DIRECT
+
+        # 可能用到的正则过滤节点示例
         # []proxyNames|a                         # 包含a
         # []proxyNames|^(.*)(a|b)+(.*)$          # 包含a或b
         # []proxyNames|^(?=.*a)(?=.*b).*$        # 包含a和b
