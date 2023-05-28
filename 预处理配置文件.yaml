@@ -1,6 +1,7 @@
 # 参数说明：https://docs.cfw.lbyczf.com/contents/parser.html
 # https://github.com/Fndroid/clash_for_windows_pkg/issues/2729
 # https://github.com/Loyalsoldier/clash-rules
+# https://bulianglin.com/archives/lb.html
 parsers: # array
   - reg: "slbable$"
     # - reg: ^.*$
