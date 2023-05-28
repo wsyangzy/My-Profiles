@@ -1,0 +1,281 @@
+# 参数说明：https://docs.cfw.lbyczf.com/contents/parser.html
+parsers: # array
+  - reg: "slbable$"
+    # - reg: ^.*$
+    # - reg: ^.*$ 匹配所有订阅，或  - url: https://example.com/profile.yaml 指定订阅
+    # 下面是删除服务商自带的策略组和规则
+    code: |
+      module.exports.parse = (raw, { yaml }) => {
+        const rawObj = yaml.parse(raw)
+        const groups = []
+        const rules = []
+        return yaml.stringify({ ...rawObj, 'proxy-groups': groups, rules })
+        return yaml.stringify({ ...rawObj, 'proxy-groups': groups, rules })
+      }
+    yaml:
+      # 添加预处理策略组
+      append-proxy-groups:
+        - name: 🚀 节点选择
+          type: select
+          proxies:
+            - ♻️ PROXY
+            - ♻️ 香港节点
+            - ♻️ 新加坡节点
+            - ♻️ 台湾节点
+            - ♻️ 日本节点
+            - ♻️ 韩国节点
+            - ♻️ 美国节点
+            - ♻️ 其他节点
+
+        - name: ♻️ PROXY
+          type: url-test
+          url: http://www.gstatic.com/generate_204
+          interval: 600 # 自动切换代理的间隔时间
+          tolerance: 1000 # 检测代理的超时时间
+          proxies:
+            - ♻️ 香港节点
+            - ♻️ 新加坡节点
+            - ♻️ 台湾节点
+            - ♻️ 日本节点
+            - ♻️ 韩国节点
+            - ♻️ 美国节点
+
+        - name: ♻️ 香港节点
+          type: url-test
+          url: http://www.gstatic.com/generate_204
+          interval: 1000
+
+        - name: ♻️ 新加坡节点
+          type: url-test
+          url: http://www.gstatic.com/generate_204
+          interval: 600
+
+        - name: ♻️ 台湾节点
+          type: url-test
+          url: http://www.google.com/generate_204
+          interval: 300
+
+        - name: ♻️ 日本节点
+          type: url-test
+          url: http://www.google.com/generate_204
+          interval: 300
+
+        - name: ♻️ 韩国节点
+          type: url-test
+          url: http://www.google.com/generate_204
+          interval: 300
+
+        - name: ♻️ 美国节点
+          type: url-test
+          url: http://www.google.com/generate_204
+          interval: 300
+
+        - name: ♻️ 其他节点
+          type: url-test
+          url: http://www.google.com/generate_204
+          interval: 300
+
+        - name: ♻️ Netflix
+          type: select
+
+        - name: ⚖️ 负载均衡-散列
+          type: load-balance
+          url: "http://www.google.com/generate_204"
+          interval: 100
+          strategy: consistent-hashing
+
+        - name: ⚖️ 负载均衡-轮询
+          type: load-balance
+          url: "http://www.google.com/generate_204"
+          interval: 100
+          strategy: round-robin
+
+      # 策略组示例
+      # - name: 分组名
+      # type: select       # 手动选点
+      # url-test     # 自动选择延迟最低的节点
+      # fallback     # 节点故障时自动切换下一个
+      # laod-balance # 均衡使用分组内的节点
+      # url: http://www.gstatic.com/generate_204 # 测试地址 非select类型分组必要
+      # interval: 300 # 自动测试间隔时间，单位秒 非select类型分组必要
+      # tolerance: 50 # 允许的偏差，节点之间延迟差小于该值不切换 非必要
+      # proxies:
+      # - 节点名称或其他分组套娃
+
+      commands:
+       # 三个内置值用于设置策略组节点
+       # []proxyNames 所有节点
+       # []groupNames 所有策略组
+       # []shuffledProxyNames 重新排列后的节点 ？
+
+        # 负载均衡
+        - proxy-groups.⚖️ 负载均衡-散列.proxies=[]groupNames|香港|新加坡|台|日本|韩国
+        # - proxy-groups.1.proxies.0+⚖️ 负载均衡-散列
+        - proxy-groups.⚖️ 负载均衡-轮询.proxies=[]groupNames|香港|新加坡|台|日本|韩国
+        # - proxy-groups.1.proxies.0+⚖️ 负载均衡-轮询
+
+        - proxy-groups.♻️ 香港节点.proxies=[]proxyNames|香港
+        - proxy-groups.♻️ 新加坡节点.proxies=[]proxyNames|新加坡
+        - proxy-groups.♻️ 台湾节点.proxies=[]proxyNames|台
+        - proxy-groups.♻️ 日本节点.proxies=[]proxyNames|日本
+        - proxy-groups.♻️ 韩国节点.proxies=[]proxyNames|韩国
+        - proxy-groups.♻️ 美国节点.proxies=[]proxyNames|美国
+        - proxy-groups.♻️ 其他节点.proxies=[]proxyNames|^[^香日台新韩美]*$ # 排除节点名字有“香日台新韩美”的节点
+        - proxy-groups.♻️ Netflix.proxies=[]proxyNames|奈飞|nf|解锁|Netflix|netflix
+
+        # 策略组中添加负载均衡节点 - proxy-groups.[数组序号/策略组名称].proxies.0+[节点名称]
+        - proxy-groups.♻️ PROXY.proxies.0+⚖️ 负载均衡-散列
+        - proxy-groups.♻️ PROXY.proxies.0+⚖️ 负载均衡-轮询
+
+        # 为各个策略组添加一个DIRECT，避免机场节点无法匹配上面的正则筛选而导致配置出错
+        - proxy-groups.♻️ Netflix.proxies.0+DIRECT
+        # - proxy-groups.♻️ 香港节点.proxies.0+DIRECT
+        # - proxy-groups.♻️ 新加坡节点.proxies.0+DIRECT
+        # - proxy-groups.♻️ 台湾节点.proxies.0+DIRECT
+        # - proxy-groups.♻️ 日本节点.proxies.0+DIRECT
+        # - proxy-groups.♻️ 韩国节点.proxies.0+DIRECT
+        # - proxy-groups.♻️ 美国节点.proxies.0+DIRECT
+        # - proxy-groups.♻️ 其他节点.proxies.0+DIRECT
+
+        # - proxy-groups.节点名字.proxies.0+DIRECT # 向指定分组第一个位置添加一个 DIRECT 节点名
+        # 一些可能用到的正则过滤节点示例，使分组更细致
+        # []proxyNames|a                         # 包含a
+        # []proxyNames|^(.*)(a|b)+(.*)$          # 包含a或b
+        # []proxyNames|^(?=.*a)(?=.*b).*$        # 包含a和b
+        # []proxyNames|^((?!b).)*a((?!b).)*$     # 包含a且不包含b
+        # []proxyNames|^((?!b|c).)*a((?!b|c).)*$ # 包含a且不包含b或c
+        # 正则教程：https://deerchao.cn/tutorials/regex/regex.htm#top
+
+      # 添加预处理规则
+      prepend-rules: # 规则由上往下遍历，如上面规则已经命中，则不再往下处理
+        - DOMAIN-SUFFIX,spotify.com,♻️ 香港节点
+        - DOMAIN-SUFFIX,google.com,♻️ 香港节点
+        - DOMAIN-SUFFIX,youtube.com,♻️ 香港节点
+        - DOMAIN-KEYWORD,discord,♻️ 香港节点
+        - DOMAIN-KEYWORD,twitch,♻️ 香港节点
+        - DOMAIN-KEYWORD,telegram,♻️ 香港节点
+        # - DOMAIN-SUFFIX,images.blz-contentstack.com,美国节点
+        # - DOMAIN-SUFFIX,content-ui.battle.net,♻️ 美国节点
+        # - DOMAIN-SUFFIX,telemetry-in.battle.net,♻️ 美国节点
+        - DOMAIN-SUFFIX,twitter.com,♻️ 香港节点
+        - DOMAIN-KEYWORD,twitter,♻️ 香港节点
+        - DOMAIN-SUFFIX,instagram.com,♻️ 香港节点
+        - DOMAIN-KEYWORD,instagram,♻️ 香港节点
+        - RULE-SET,netflix,♻️ Netflix
+        - RULE-SET,applications,DIRECT
+        - DOMAIN,clash.razord.top,DIRECT
+        - DOMAIN,yacd.haishan.me,DIRECT
+        - RULE-SET,private,DIRECT
+        - RULE-SET,reject,REJECT
+        - RULE-SET,icloud,DIRECT
+        - RULE-SET,apple,DIRECT
+        - RULE-SET,google,DIRECT
+        - RULE-SET,proxy,♻️ PROXY
+        - RULE-SET,direct,DIRECT
+        - RULE-SET,lancidr,DIRECT
+        - RULE-SET,cncidr,DIRECT
+        - RULE-SET,telegramcidr,♻️ PROXY
+        - GEOIP,LAN,DIRECT
+        - GEOIP,CN,DIRECT
+        # - MATCH,♻️ PROXY #白名单模式 「没有命中规则的网络流量，统统使用代理」
+        - MATCH,DIRECT #黑名单模式 「只有命中规则的网络流量，才使用代理」
+
+      # 添加规则集
+      mix-rule-providers:
+        reject:
+          type: http
+          behavior: domain
+          url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt"
+          path: ./ruleset/reject.yaml
+          interval: 86400
+
+        icloud:
+          type: http
+          behavior: domain
+          url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt"
+          path: ./ruleset/icloud.yaml
+          interval: 86400
+
+        apple:
+          type: http
+          behavior: domain
+          url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt"
+          path: ./ruleset/apple.yaml
+          interval: 86400
+
+        google:
+          type: http
+          behavior: domain
+          url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/google.txt"
+          path: ./ruleset/google.yaml
+          interval: 86400
+
+        proxy:
+          type: http
+          behavior: domain
+          url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt"
+          path: ./ruleset/proxy.yaml
+          interval: 86400
+
+        direct:
+          type: http
+          behavior: domain
+          url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt"
+          path: ./ruleset/direct.yaml
+          interval: 86400
+
+        private:
+          type: http
+          behavior: domain
+          url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt"
+          path: ./ruleset/private.yaml
+          interval: 86400
+
+        gfw:
+          type: http
+          behavior: domain
+          url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt"
+          path: ./ruleset/gfw.yaml
+          interval: 86400
+
+        tld-not-cn:
+          type: http
+          behavior: domain
+          url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.txt"
+          path: ./ruleset/tld-not-cn.yaml
+          interval: 86400
+
+        telegramcidr:
+          type: http
+          behavior: ipcidr
+          url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt"
+          path: ./ruleset/telegramcidr.yaml
+          interval: 86400
+
+        cncidr:
+          type: http
+          behavior: ipcidr
+          url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt"
+          path: ./ruleset/cncidr.yaml
+          interval: 86400
+
+        lancidr:
+          type: http
+          behavior: ipcidr
+          url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt"
+          path: ./ruleset/lancidr.yaml
+          interval: 86400
+
+        applications:
+          type: http
+          behavior: classical
+          url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt"
+          path: ./ruleset/applications.yaml
+          interval: 86400
+
+        netflix: # 奈飞的分流规则
+          type: http
+          behavior: classical
+          url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/release/rule/Clash/Netflix/Netflix.yaml"
+          path: ./ruleset/netflix.yaml
+          interval: 86400
