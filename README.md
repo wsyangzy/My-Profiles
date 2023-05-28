@@ -1,5 +1,5 @@
 # My-Clash-Profiles
-**自用clash预处理配置文件 添加负载均衡策略组**
+**自用clash预处理配置文件 添加负载均衡策略组，订阅链接末尾添加后缀`#slbable`后更新订阅执行**
 
 > `参数说明`：https://docs.cfw.lbyczf.com/contents/parser.html
 >
