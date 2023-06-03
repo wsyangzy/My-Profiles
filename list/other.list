@@ -1,23 +1,29 @@
-# google
+# 🔍 google
 DOMAIN-SUFFIX,google.com
 DOMAIN-KEYWORD,google
 
-# youtube
+# 🎥 youtube
 DOMAIN-SUFFIX,youtube.com
 DOMAIN-KEYWORD,youtube
 
-# discord
+# 🎮 discord
 DOMAIN-SUFFIX,discord.com
 DOMAIN-KEYWORD,discord
 
-# twitch
+# 🎮 twitch
 DOMAIN-SUFFIX,twitch.com
 DOMAIN-KEYWORD,twitch
 
-# telegram
+# 📲 telegram
 DOMAIN-SUFFIX,telegram.com
 DOMAIN-KEYWORD,telegram
 
-# spotify
+# 🎧 spotify
 DOMAIN-SUFFIX,spotify.com
 DOMAIN-KEYWORD,spotify
+
+# 🔗 LinkedIn
+# 🎵 TikTok
+# 📌 Pinterest
+# 👽 Reddit
+# 👻 Snapchat
