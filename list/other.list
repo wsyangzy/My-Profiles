@@ -1,29 +1,220 @@
 # 🔍 google
 DOMAIN-SUFFIX,google.com
 DOMAIN-KEYWORD,google
+# 来源 https://cdn.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/Google.list
+# 去除 Youtube 相关
+DOMAIN-KEYWORD,gmail
+DOMAIN-KEYWORD,google
+DOMAIN-SUFFIX,1e100.net
+DOMAIN-SUFFIX,2mdn.net
+DOMAIN-SUFFIX,app-measurement.net
+DOMAIN-SUFFIX,g.co
+DOMAIN-SUFFIX,ggpht.com
+DOMAIN-SUFFIX,goo.gl
+DOMAIN-SUFFIX,googleapis.cn
+DOMAIN-SUFFIX,googleapis.com
+IP-CIDR,74.125.0.0/16,no-resolve
+IP-CIDR,173.194.0.0/16,no-resolve
 
 # 🎥 youtube
-DOMAIN-SUFFIX,youtube.com
+# https://github.com/ACL4SSR/ACL4SSR/raw/master/Clash/Ruleset/YouTube.list
+USER-AGENT,*youtube*
+USER-AGENT,YouTube*
+USER-AGENT,com.google.ios.youtube*
 DOMAIN-KEYWORD,youtube
+DOMAIN,youtubei.googleapis.com
+DOMAIN,yt3.ggpht.com
+DOMAIN-SUFFIX,googlevideo.com
+DOMAIN-SUFFIX,gvt2.com
+DOMAIN-SUFFIX,withyoutube.com
+DOMAIN-SUFFIX,youtu.be
+DOMAIN-SUFFIX,youtube-nocookie.com
+DOMAIN-SUFFIX,youtube.com
+DOMAIN-SUFFIX,youtubeeducation.com
+DOMAIN-SUFFIX,youtubegaming.com
+DOMAIN-SUFFIX,youtubekids.com
+DOMAIN-SUFFIX,yt.be
+DOMAIN-SUFFIX,ytimg.com
 
 # 🎮 discord
+# https://github.com/ACL4SSR/ACL4SSR/raw/master/Clash/Ruleset/Discord.list
+DOMAIN-SUFFIX,discord.co
 DOMAIN-SUFFIX,discord.com
-DOMAIN-KEYWORD,discord
+DOMAIN-SUFFIX,discord.gg
+DOMAIN-SUFFIX,discord.media
+DOMAIN-SUFFIX,discordapp.com
+DOMAIN-SUFFIX,discordapp.net
 
 # 🎮 twitch
-DOMAIN-SUFFIX,twitch.com
-DOMAIN-KEYWORD,twitch
+# https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Twitch.list
+DOMAIN-KEYWORD,ttvnw
+DOMAIN-SUFFIX,ext-twitch.tv
+DOMAIN-SUFFIX,jtvnw.net
+DOMAIN-SUFFIX,ttvnw.net
+DOMAIN-SUFFIX,twitch-ext.rootonline.de
+DOMAIN-SUFFIX,twitch.tv
+DOMAIN-SUFFIX,twitchcdn.net
 
 # 📲 telegram
-DOMAIN-SUFFIX,telegram.com
+# https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Telegram.list
 DOMAIN-KEYWORD,telegram
+DOMAIN-SUFFIX,t.me
+DOMAIN-SUFFIX,tdesktop.com
+DOMAIN-SUFFIX,telegra.ph
+DOMAIN-SUFFIX,telegram.me
+DOMAIN-SUFFIX,telegram.org
+DOMAIN-SUFFIX,telesco.pe
+IP-CIDR,91.108.0.0/16,no-resolve
+IP-CIDR,109.239.140.0/24,no-resolve
+IP-CIDR,149.154.160.0/20,no-resolve
+IP-CIDR6,2001:67c:4e8::/48,no-resolve
+IP-CIDR6,2001:b28:f23d::/48,no-resolve
+IP-CIDR6,2001:b28:f23f::/48,no-resolve
 
 # 🎧 spotify
+# https://github.com/ACL4SSR/ACL4SSR/raw/master/Clash/Ruleset/Spotify.list
+USER-AGENT,Spotify*
+DOMAIN-KEYWORD,-spotify-
+DOMAIN-KEYWORD,spotify.com
+DOMAIN-SUFFIX,pscdn.co
+DOMAIN-SUFFIX,scdn.co
+DOMAIN-SUFFIX,spoti.fi
 DOMAIN-SUFFIX,spotify.com
-DOMAIN-KEYWORD,spotify
+DOMAIN-SUFFIX,spotifycdn.com
+DOMAIN-SUFFIX,spotifycdn.net
 
 # 🔗 LinkedIn
+
 # 🎵 TikTok
+
 # 📌 Pinterest
+DOMAIN-SUFFIX,pinterest.com
+
 # 👽 Reddit
+
 # 👻 Snapchat
+
+# 🐙 Github
+# https://github.com/ACL4SSR/ACL4SSR/raw/master/Clash/Ruleset/Github.list
+DOMAIN-KEYWORD,github
+DOMAIN-SUFFIX,github.com
+DOMAIN-SUFFIX,github.io
+DOMAIN-SUFFIX,githubapp.com
+DOMAIN-SUFFIX,githubassets.com
+DOMAIN-SUFFIX,githubusercontent.com
+
+# 🖼️ Pixiv
+# https://github.com/ACL4SSR/ACL4SSR/raw/master/Clash/Ruleset/Pixiv.list
+DOMAIN-SUFFIX,pixiv.net
+DOMAIN-SUFFIX,pximg.net
+
+# 🎨 artstation
+DOMAIN-SUFFIX,artstation.com
+
+# 🎭 deviantart
+DOMAIN-SUFFIX,deviantart.com
+
+
+# 🎮 Steam
+# https://github.com/ACL4SSR/ACL4SSR/raw/master/Clash/Ruleset/Steam.list
+DOMAIN,steambroadcast.akamaized.net
+DOMAIN,steamcdn-a.akamaihd.net
+DOMAIN,steamcommunity-a.akamaihd.net
+DOMAIN,steampipe.akamaized.net
+DOMAIN,steamstore-a.akamaihd.net
+DOMAIN,steamusercontent-a.akamaihd.net
+DOMAIN,steamuserimages-a.akamaihd.net
+DOMAIN-SUFFIX,fanatical.com
+DOMAIN-SUFFIX,humblebundle.com
+DOMAIN-SUFFIX,playartifact.com
+DOMAIN-SUFFIX,steam-chat.com
+DOMAIN-SUFFIX,steamcommunity.com
+DOMAIN-SUFFIX,steamgames.com
+DOMAIN-SUFFIX,steampowered.com
+DOMAIN-SUFFIX,steamserver.net
+DOMAIN-SUFFIX,steamstat.us
+DOMAIN-SUFFIX,steamstatic.com
+DOMAIN-SUFFIX,underlords.com
+DOMAIN-SUFFIX,valvesoftware.com
+
+# 💻 Microsoft
+# https://github.com/ACL4SSR/ACL4SSR/raw/master/Clash/Ruleset/Microsoft.list
+DOMAIN-KEYWORD,1drv
+DOMAIN-KEYWORD,microsoft
+DOMAIN-SUFFIX,aadrm.com
+DOMAIN-SUFFIX,acompli.com
+DOMAIN-SUFFIX,acompli.net
+DOMAIN-SUFFIX,aka.ms
+DOMAIN-SUFFIX,akadns.net
+DOMAIN-SUFFIX,aspnetcdn.com
+DOMAIN-SUFFIX,assets-yammer.com
+DOMAIN-SUFFIX,azure.com
+DOMAIN-SUFFIX,azure.net
+DOMAIN-SUFFIX,azureedge.net
+DOMAIN-SUFFIX,azureiotcentral.com
+DOMAIN-SUFFIX,azurerms.com
+DOMAIN-SUFFIX,bing.com
+DOMAIN-SUFFIX,bing.net
+DOMAIN-SUFFIX,bingapis.com
+DOMAIN-SUFFIX,cloudapp.net
+DOMAIN-SUFFIX,cloudappsecurity.com
+DOMAIN-SUFFIX,edgesuite.net
+DOMAIN-SUFFIX,gfx.ms
+DOMAIN-SUFFIX,hotmail.com
+DOMAIN-SUFFIX,live.com
+DOMAIN-SUFFIX,live.net
+DOMAIN-SUFFIX,lync.com
+DOMAIN-SUFFIX,msappproxy.net
+DOMAIN-SUFFIX,msauth.net
+DOMAIN-SUFFIX,msauthimages.net
+DOMAIN-SUFFIX,msecnd.net
+DOMAIN-SUFFIX,msedge.net
+DOMAIN-SUFFIX,msft.net
+DOMAIN-SUFFIX,msftauth.net
+DOMAIN-SUFFIX,msftauthimages.net
+DOMAIN-SUFFIX,msftidentity.com
+DOMAIN-SUFFIX,msidentity.com
+DOMAIN-SUFFIX,msn.cn
+DOMAIN-SUFFIX,msn.com
+DOMAIN-SUFFIX,msocdn.com
+DOMAIN-SUFFIX,msocsp.com
+DOMAIN-SUFFIX,mstea.ms
+DOMAIN-SUFFIX,o365weve.com
+DOMAIN-SUFFIX,oaspapps.com
+DOMAIN-SUFFIX,office.com
+DOMAIN-SUFFIX,office.net
+DOMAIN-SUFFIX,office365.com
+DOMAIN-SUFFIX,officeppe.net
+DOMAIN-SUFFIX,omniroot.com
+DOMAIN-SUFFIX,onedrive.com
+DOMAIN-SUFFIX,onenote.com
+DOMAIN-SUFFIX,onenote.net
+DOMAIN-SUFFIX,onestore.ms
+DOMAIN-SUFFIX,outlook.com
+DOMAIN-SUFFIX,outlookmobile.com
+DOMAIN-SUFFIX,phonefactor.net
+DOMAIN-SUFFIX,public-trust.com
+DOMAIN-SUFFIX,sfbassets.com
+DOMAIN-SUFFIX,sfx.ms
+DOMAIN-SUFFIX,sharepoint.com
+DOMAIN-SUFFIX,sharepointonline.com
+DOMAIN-SUFFIX,skype.com
+DOMAIN-SUFFIX,skypeassets.com
+DOMAIN-SUFFIX,skypeforbusiness.com
+DOMAIN-SUFFIX,staffhub.ms
+DOMAIN-SUFFIX,svc.ms
+DOMAIN-SUFFIX,sway-cdn.com
+DOMAIN-SUFFIX,sway-extensions.com
+DOMAIN-SUFFIX,sway.com
+DOMAIN-SUFFIX,trafficmanager.net
+DOMAIN-SUFFIX,uservoice.com
+DOMAIN-SUFFIX,virtualearth.net
+DOMAIN-SUFFIX,visualstudio.com
+DOMAIN-SUFFIX,windows-ppe.net
+DOMAIN-SUFFIX,windows.com
+DOMAIN-SUFFIX,windows.net
+DOMAIN-SUFFIX,windowsazure.com
+DOMAIN-SUFFIX,windowsupdate.com
+DOMAIN-SUFFIX,wunderlist.com
+DOMAIN-SUFFIX,yammer.com
+DOMAIN-SUFFIX,yammerusercontent.com

@@ -1,3 +1,10 @@
 # 📷 instagram
-DOMAIN-SUFFIX,instagram.com
+# https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Instagram.list
 DOMAIN-KEYWORD,instagram
+DOMAIN-SUFFIX,cdninstagram.com
+DOMAIN-SUFFIX,instagr.am
+DOMAIN-SUFFIX,instagram.com
+
+# 📺 afreecatv
+DOMAIN-KEYWORD,afreecatv
+DOMAIN-SUFFIX,afreecatv.com
