@@ -4,6 +4,8 @@
 
 `官方文档`：https://docs.cfw.lbyczf.com/
 
+https://dreamacro.github.io/clash/
+
 ### 预处理配置
 
 `Settings-Profiles-Parsers-Edit`
@@ -16,11 +18,11 @@
 >
 > `clash-rules`：https://github.com/Loyalsoldier/clash-rules
 >
-> https://github.com/Fndroid/clash_for_windows_pkg/issues/2193
+> [parser自动替换订阅规则，自由切换黑白名单](https://github.com/Fndroid/clash_for_windows_pkg/issues/2193)
 >
-> https://github.com/Fndroid/clash_for_windows_pkg/issues/2729
+> [parse配置/.ini配置](https://github.com/Fndroid/clash_for_windows_pkg/issues/2729)
 >
-> https://github.com/Fndroid/clash_for_windows_pkg/issues/2579#issuecomment-1567688925
+> [过滤节点、分组（code实现）](https://github.com/Fndroid/clash_for_windows_pkg/issues/2579#issuecomment-1567688925)
 
 ### `.ini`配置
 
@@ -29,10 +31,22 @@
 > `在线订阅转换`：https://acl4ssr-sub.github.io
 >
 > `远程配置：https://raw.githubusercontent.com/wsyangzy/My-Clash-Profiles/main/Full_MultiMode.ini`
+
+### 其他
+
+> [`获取配置文件和在线规则集时只能直连，导致无法获取配置和规则集`](https://github.com/Dreamacro/clash/issues/2775)：
 >
-> https://github.com/ACL4SSR/ACL4SSR/tree/master/Clash/config
+> > [jsDelivr CDN](https://github.com/Fndroid/clash_for_windows_pkg/issues/2979#issuecomment-1116196740)/[FastGit](https://github.com/Dreamacro/clash/issues/898#issuecomment-675908855)
+> >
+> > [本地配置规则](https://github.com/Dreamacro/clash/issues/2775#issuecomment-1595928740)
+> >
+> > [parser预加载rule-providers到本地](https://github.com/Dreamacro/clash/issues/1385#issuecomment-1583996210)
 >
-> https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config
+> `规则集`：
 >
-> https://github.com/Mazeorz/airports/tree/master/Clash
+> > [ACL4SSR/ACL4SSR](https://github.com/ACL4SSR/ACL4SSR/tree/master/Clash/config)
+> >
+> > [SleepyHeeead/subconverter-config](https://github.com/SleepyHeeead/subconverter-config)
+> >
+> > [Mazeorz/airports](https://github.com/Mazeorz/airports)
 
