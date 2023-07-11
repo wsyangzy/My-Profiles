@@ -165,7 +165,7 @@ parsers: # array
         - proxy-groups.♻️ 韩国节点.proxies.1+[]proxyNames|^(?!.*[倍xX])(?=.*(?:[kK][rR]|韩国)).*$
         - proxy-groups.♻️ 美国节点.proxies.1+[]proxyNames|^(?!.*[倍xX])(?=.*(?:[uU][sS]|美国)).*$
         # - proxy-groups.🌀 其他节点.proxies=[]proxyNames|^[^香日台新韩美]*$
-        - proxy-groups.🌀 其他节点.proxies.1+[]proxyNames|^(?:(?!.*[香日台新韩美])|.*(?:[xX]|倍|chatGPT|GPT)).*$
+        - proxy-groups.🌀 其他节点.proxies.1+[]proxyNames|^(?:(?!.*[港日台新韩美])|.*(?:[xX]|倍|chatGPT|GPT)).*$
         # - proxy-groups.♻️ 解锁流媒体.proxies=[]proxyNames|奈飞|解锁|nf|netflix/i
         - proxy-groups.♻️ 解锁流媒体.proxies.1+[]proxyNames|^(?!.*[倍xX])(?=.*(?:奈飞|解锁|nf|netflix|Netflix|流媒体)).*$
 
