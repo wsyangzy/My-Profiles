@@ -57,3 +57,16 @@ https://dreamacro.github.io/clash/
 >
 > [blackmatrix7](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash)
 
+#### clash verge
+
+>[使用指南](https://github.com/zzzgydi/clash-verge/wiki/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97)
+>
+>[clash verge 配置详解](https://wiki.metacubex.one/config/proxy-groups/filter/)
+>
+>[clash verge 配置示例](https://wiki.metacubex.one/example/)
+>
+>[abrclano/Merge+Script](https://github.com/abrclano/Self-use-Rules/tree/main/Clash.verge)
+>
+>[test482/cfw parse](https://gist.github.com/test482/3572dbd15b4838a7f999a749104a77ee#file-paser-yaml)
+>
+>[test482/clash verge merge](https://gist.github.com/test482/62439ebb2fdba846c0e3071d299eae91#file-clash-verge-local-config-yaml)
