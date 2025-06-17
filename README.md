@@ -55,7 +55,7 @@ https://dreamacro.github.io/clash/
 >
 > [blackmatrix7](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash)
 
-## 2.clash其他衍生工具
+## 2.其他代理工具
 
 ### Clash.Meta
 
