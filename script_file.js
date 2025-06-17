@@ -1,10 +1,21 @@
+// 地区与高倍关键词常量
+const REGION_KEYWORDS = {
+  hk: "(?:[hH][kK]|香港|港)",
+  sg: "(?:[sS][gG]|新加坡|狮城)",
+  tw: "(?:[tT][wW]|台湾|台)",
+  jp: "(?:[jJ][pP]|日本|日)",
+  kr: "(?:[kK][rR]|韩国|韩)",
+  us: "(?:[uU][sS]|美国|美)",
+};
+const MULTI_KEYWORDS = "(x10|x8|x5|10倍|8倍|5倍)";
+
 // 配置验证器
 class ConfigValidator {
   static validateConfig(config) {
     const errors = [];
 
     if (!config || typeof config !== "object") {
-      errors.push("配置对象无效");
+      errors.push("配置不是有效的对象。");
       return errors;
     }
 
@@ -16,12 +27,12 @@ class ConfigValidator {
         : 0;
 
     if (proxyCount === 0 && proxyProviderCount === 0) {
-      errors.push("配置文件中未找到任何代理");
+      errors.push("未检测到任何代理或代理提供者。");
     }
 
     // 验证必要字段
     if (config.proxies && !Array.isArray(config.proxies)) {
-      errors.push("proxies字段必须是数组");
+      errors.push("proxies 字段必须为数组。");
     }
 
     return errors;
@@ -37,20 +48,20 @@ class ConfigValidator {
 class DNSManager {
   static getDomesticNameservers() {
     return [
-      "https://dns.alidns.com/dns-query", // 阿里云公共DNS
-      "https://doh.pub/dns-query", // 腾讯DNSPod
-      "https://doh.360.cn/dns-query", // 360安全DNS
+      "https://dns.alidns.com/dns-query",
+      "https://doh.pub/dns-query",
+      "https://doh.360.cn/dns-query",
     ];
   }
 
   static getForeignNameservers() {
     return [
-      "https://1.1.1.1/dns-query", // Cloudflare(主)
-      "https://1.0.0.1/dns-query", // Cloudflare(备)
-      "https://208.67.222.222/dns-query", // OpenDNS(主)
-      "https://208.67.220.220/dns-query", // OpenDNS(备)
-      "https://194.242.2.2/dns-query", // Mullvad(主)
-      "https://194.242.2.3/dns-query", // Mullvad(备)
+      "https://1.1.1.1/dns-query",
+      "https://1.0.0.1/dns-query",
+      "https://208.67.222.222/dns-query",
+      "https://208.67.220.220/dns-query",
+      "https://194.242.2.2/dns-query",
+      "https://194.242.2.3/dns-query",
     ];
   }
 
@@ -335,6 +346,7 @@ class ProxyGroupManager {
           "日本节点",
           "韩国节点",
           "美国节点",
+          "高倍节点",
           "其他节点",
         ],
         icon: `${iconBase}/adjust.svg`,
@@ -383,32 +395,32 @@ class ProxyGroupManager {
     const regions = [
       {
         name: "香港节点",
-        filter: "^(?!.*(x10|x8|10倍|8倍))(?=.*(?:[hH][kK]|香港|港)).*$",
+        filter: `^(?:(?!${MULTI_KEYWORDS}).)*${REGION_KEYWORDS.hk}.*`,
         flag: "hk",
       },
       {
         name: "新加坡节点",
-        filter: "^(?!.*(x10|x8|10倍|8倍))(?=.*(?:[sS][pP]|新加坡|狮城)).*$",
+        filter: `^(?:(?!${MULTI_KEYWORDS}).)*${REGION_KEYWORDS.sg}.*`,
         flag: "sg",
       },
       {
         name: "台湾节点",
-        filter: "^(?!.*(x10|x8|10倍|8倍))(?=.*(?:[tT][wW]|台湾|台)).*$",
+        filter: `^(?:(?!${MULTI_KEYWORDS}).)*${REGION_KEYWORDS.tw}.*`,
         flag: "tw",
       },
       {
         name: "日本节点",
-        filter: "^(?!.*(x10|x8|10倍|8倍))(?=.*(?:[jJ][pP]|日本|日)).*$",
+        filter: `^(?:(?!${MULTI_KEYWORDS}).)*${REGION_KEYWORDS.jp}.*`,
         flag: "jp",
       },
       {
         name: "韩国节点",
-        filter: "^(?!.*(x10|x8|10倍|8倍))(?=.*(?:[kK][rR]|韩国|韩)).*$",
+        filter: `^(?:(?!${MULTI_KEYWORDS}).)*${REGION_KEYWORDS.kr}.*`,
         flag: "kr",
       },
       {
         name: "美国节点",
-        filter: "^(?!.*(x10|x8|10倍|8倍))(?=.*(?:[uU][sS]|美国|美)).*$",
+        filter: `^(?:(?!${MULTI_KEYWORDS}).)*${REGION_KEYWORDS.us}.*`,
         flag: "us",
       },
     ];
@@ -427,12 +439,22 @@ class ProxyGroupManager {
       .concat([
         {
           ...base,
-          name: "其他节点",
-          type: "url-test",
+          name: "高倍节点",
+          type: "select",
           tolerance: 100,
           "include-all": true,
-          filter:
-            "^(?:(?!.*[香港日台新韩美])|.*(?:(x10)|(x8)|10倍|8倍|chatGPT|GPT|gpt)).*$",
+          filter: MULTI_KEYWORDS,
+          proxies: ["REJECT"],
+          icon: `https://fastly.jsdelivr.net/gh/wsyangzy/My-Profiles@main/icon/urltest.svg`,
+        },
+        {
+          ...base,
+          name: "其他节点",
+          type: "select",
+          tolerance: 100,
+          "include-all": true,
+          // 排除所有地区节点
+          filter: `^(?:(?!${Object.values(REGION_KEYWORDS).join("|")}).)*$`,
           proxies: ["REJECT"],
           icon: `${iconBase}/unknown.svg`,
         },
@@ -528,17 +550,17 @@ class RuleManager {
       "RULE-SET,Threads,韩国节点",
       "RULE-SET,Facebook,韩国节点",
       "RULE-SET,TikTok,韩国节点",
-      "RULE-SET,Discord,香港节点",
-      "RULE-SET,Pixiv,香港节点",
+      "RULE-SET,Discord,节点选择",
+      "RULE-SET,Pixiv,节点选择",
 
       // 通讯
-      "RULE-SET,Telegram,香港节点",
+      "RULE-SET,Telegram,节点选择",
 
       // 流媒体
-      "RULE-SET,Twitch,香港节点",
-      "RULE-SET,Spotify,香港节点",
-      "RULE-SET,YouTube,香港节点",
-      "RULE-SET,YouTubeMusic,香港节点",
+      "RULE-SET,Twitch,节点选择",
+      "RULE-SET,Spotify,节点选择",
+      "RULE-SET,YouTube,节点选择",
+      "RULE-SET,YouTubeMusic,节点选择",
       "RULE-SET,netflix,解锁流媒体",
 
       // 搜索引擎
@@ -581,21 +603,27 @@ class RuleManager {
 // 主函数 - 程序入口
 function main(config) {
   try {
-    // 验证配置
     const errors = ConfigValidator.validateConfig(config);
     if (errors.length > 0) {
-      throw new Error(`配置验证失败: ${errors.join(", ")}`);
+      console.error("配置校验失败：", errors);
+      return;
     }
+    const dnsConfig = DNSManager.createDNSConfig();
+    const ruleProviders = RuleProviderManager.createRuleProviders();
+    const proxyGroups = ProxyGroupManager.createProxyGroups();
+    const rules = RuleManager.createRules();
 
-    // 生成配置
-    config["dns"] = DNSManager.createDNSConfig();
-    config["proxy-groups"] = ProxyGroupManager.createProxyGroups();
-    config["rule-providers"] = RuleProviderManager.createRuleProviders();
-    config["rules"] = RuleManager.createRules();
-
-    return config;
+    // 返回合成后的配置对象
+    return {
+      ...config,
+      dns: dnsConfig,
+      "rule-providers": ruleProviders,
+      "proxy-groups": proxyGroups,
+      rules,
+    };
   } catch (error) {
-    throw error;
+    console.error("主函数执行出错：", error);
+    return null;
   }
 }
 
