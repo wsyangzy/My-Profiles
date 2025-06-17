@@ -1,4 +1,4 @@
-# My-Profiles
+# proxy-profiles
 
 ## 1.Clash for Windwos
 
